@@ -11,10 +11,10 @@ repository = "https://github.com/bullbearpanda/jupyter-research"
 python = "^3.11"
 pandas = "^2.0.0"
 jupyter = "^1.0.0"
-requests = "^2.28.2"
 plotly = "^5.14.1"
 yfinance = "^0.2.18"
 pydantic = "^1.10.7"
+httpx = "^0.24.1"
 
 
 [build-system]
