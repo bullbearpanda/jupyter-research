@@ -16,6 +16,7 @@ yfinance = "^0.2.18"
 pydantic = "^1.10.7"
 httpx = "^0.24.1"
 seaborn = "^0.12.2"
+duckdb = "^0.8.1"
 
 
 [build-system]
