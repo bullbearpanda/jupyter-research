@@ -94,9 +94,10 @@ class Binance():
 
         return [Ticker(ticker["symbol"], ticker["lastPrice"], ticker["volume"]) for ticker in r.json()]
     
-    def trades(self, client: httpx.AsyncClient, symbol: str, limit: int = 500) -> list[Trade]:
+    async def trades(self, client: httpx.AsyncClient, symbol: str, limit: int = 500) -> list[Trade]:
         url = Binance.BASEURL + Binance.ENDPOINTS["trade"]
-        r = httpx.get(url)
+        payload = { "symbol": symbol, "limit": limit }
+        r = httpx.get(url, params=payload)
 
         if r.status_code != httpx.codes.OK:
             raise httpx.HTTPError(r.json())
