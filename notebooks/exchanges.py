@@ -1,7 +1,7 @@
 import httpx
 
 from os import environ
-from models import Side, Timeframe, Trade, Candle, Ticker
+from models import Timeframe, Trade, Candle, Ticker
 
 class Coinalyze():
     BASEURL = "https://api.coinalyze.net"
@@ -78,12 +78,12 @@ class Binance():
     def __init__(self) -> None:
         pass
 
-    def _ds(self, ismaker: bool) -> Side:
+    def _ds(self, ismaker: bool) -> str:
         """Determines if a given trade was a buy or sell order."""
         if ismaker:
-            return Side.SELL
+            return "sell"
         else:
-            return Side.BUY
+            return "buy"
 
     def markets(self) -> list[Ticker]:
         url = Binance.BASEURL + Binance.ENDPOINTS["ticker"]

@@ -3,10 +3,6 @@ from decimal import Decimal
 from datetime import datetime
 from pydantic.dataclasses import dataclass
 
-class Side(Enum):
-    BUY = "buy"
-    SELL = "sell"
-
 class Timeframe(Enum):
     MINUTLY = "1m"
     HOURLY = "1h"
@@ -17,7 +13,7 @@ class Timeframe(Enum):
 @dataclass
 class Trade:
     time: datetime
-    side: Side
+    side: str
     price: Decimal
     volume: Decimal
 
