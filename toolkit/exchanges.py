@@ -1,7 +1,7 @@
 import httpx
 
 from os import environ
-from models import Timeframe, Trade, Candle, Ticker
+from .models import Timeframe, Trade, Candle, Ticker
 
 class Coinalyze():
     BASEURL = "https://api.coinalyze.net"
