@@ -1,7 +1,7 @@
 import httpx
 
 from os import environ
-from .models import Timeframe, Trade, Candle, Ticker
+from .models import Timeframe, Trade, Candle, Ticker, Market
 
 class Coinalyze():
     BASEURL = "https://api.coinalyze.net"
@@ -113,3 +113,44 @@ class Binance():
             raise httpx.HTTPError(r.json())
 
         return [Candle(*kline[:6]) for kline in r.json()]
+    
+
+class Coinbase():
+    BASEURL = "https://api.exchange.coinbase.com"
+    ENDPOINTS = {
+        "market": "/products",
+        "kline": "/products"
+    }
+
+    def __init__(self) -> None:
+        pass
+
+    def _tg(self, interval: Timeframe) -> int:
+        match interval:
+            case Timeframe.MINUTLY:
+                return 60
+            case Timeframe.HOURLY:
+                return 3600
+            case Timeframe.DAILY:
+                return 86400
+            case _:
+                return 60
+
+    def markets(self) -> list[Market]:
+        url = Coinbase.BASEURL + Coinbase.ENDPOINTS["market"]
+        r = httpx.get(url)
+
+        if r.status_code != httpx.codes.OK:
+            raise httpx.HTTPError(r.json())
+        
+        return [Market(market["id"], market["base_currency"], market["quote_currency"]) for market in r.json()]
+
+    async def kline(self, client: httpx.AsyncClient, symbol: str, interval: Timeframe) -> list[Candle]:
+        url = Coinbase.BASEURL + Coinbase.ENDPOINTS["kline"] + f"/{symbol}/candles"
+        payload = { "product_id": symbol, "granularity": self._tg(interval) }
+        r = await client.get(url, params=payload)
+
+        if r.status_code != httpx.codes.OK:
+            raise httpx.HTTPError(r.json())
+
+        return [Candle(candle[0], candle[3], candle[2], candle[1], candle[4], candle[5]) for candle in r.json()]
