@@ -31,3 +31,9 @@ class Ticker:
     symbol: str
     price: Decimal
     volume: Decimal
+
+@dataclass
+class Market:
+    symbol: str
+    base: str
+    quote: str
