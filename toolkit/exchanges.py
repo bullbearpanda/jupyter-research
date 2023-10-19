@@ -84,8 +84,11 @@ class Binance():
             return "sell"
         else:
             return "buy"
+    
+    def markets(self) -> list[Market]:
+        raise NotImplementedError
 
-    def markets(self) -> list[Ticker]:
+    def tickers(self) -> list[Ticker]:
         url = Binance.BASEURL + Binance.ENDPOINTS["ticker"]
         r = httpx.get(url)
 
